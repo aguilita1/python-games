@@ -24,6 +24,10 @@ RED       = (255,   0,   0)
 GREEN     = (  0, 255,   0)
 DARKGREEN = (  0, 155,   0)
 DARKGRAY  = ( 40,  40,  40)
+LIGHTPURPLE  = (  200, 100, 255) #light purple
+DARKPURPLE = ( 128,  0,   128) #purple
+ORANGE = (255, 165, 0)
+BROWN = (139, 69, 19)
 BGCOLOR = BLACK
 
 UP = 'up'
@@ -202,13 +206,21 @@ def drawScore(score):
 
 
 def drawWorm(wormCoords):
-    for coord in wormCoords:
+    for i, coord in enumerate(wormCoords):
         x = coord['x'] * CELLSIZE
         y = coord['y'] * CELLSIZE
         wormSegmentRect = pygame.Rect(x, y, CELLSIZE, CELLSIZE)
         pygame.draw.rect(DISPLAYSURF, DARKGREEN, wormSegmentRect)
         wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
-        pygame.draw.rect(DISPLAYSURF, GREEN, wormInnerSegmentRect)
+
+        if i == HEAD:  # Draw the head in purple
+            pygame.draw.rect(DISPLAYSURF, BROWN, wormSegmentRect)
+            wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
+            pygame.draw.rect(DISPLAYSURF, ORANGE, wormInnerSegmentRect)
+        else:  # Body
+            pygame.draw.rect(DISPLAYSURF, DARKGREEN, wormSegmentRect)
+            wormInnerSegmentRect = pygame.Rect(x + 4, y + 4, CELLSIZE - 8, CELLSIZE - 8)
+            pygame.draw.rect(DISPLAYSURF, GREEN, wormInnerSegmentRect)
 
 
 def drawApple(coord):
