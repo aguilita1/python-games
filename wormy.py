@@ -63,6 +63,7 @@ def runGame():
 
     # Start the apple in a random place.
     apple = getRandomLocation()
+    apple2 = getRandomLocation()
 
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop
@@ -91,6 +92,9 @@ def runGame():
         if wormCoords[HEAD]['x'] == apple['x'] and wormCoords[HEAD]['y'] == apple['y']:
             # don't remove worm's tail segment
             apple = getRandomLocation() # set a new apple somewhere
+        elif wormCoords[HEAD]['x'] == apple2['x'] and wormCoords[HEAD]['y'] == apple2['y']:
+            # don't remove worm's tail segment
+            apple2 = getRandomLocation() # set a new apple somewhere
         else:
             del wormCoords[-1] # remove worm's tail segment
 
@@ -108,6 +112,7 @@ def runGame():
         drawGrid()
         drawWorm(wormCoords)
         drawApple(apple)
+        drawApple(apple2)
         drawScore(len(wormCoords) - 3)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
