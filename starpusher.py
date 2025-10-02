@@ -35,7 +35,7 @@ RIGHT = 'right'
 
 
 def main():
-    global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage
+    global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage, BOYIMAGE_IDX
 
     # Pygame initialization and basic set up of the global variables.
     pygame.init()
@@ -55,6 +55,7 @@ def main():
     IMAGESDICT = {'uncovered goal': pygame.image.load('RedSelector.png'),
                   'covered goal': pygame.image.load('Selector.png'),
                   'star': pygame.image.load('Star.png'),
+                  'cake': pygame.image.load('bday-cake-85x50.png'),
                   'corner': pygame.image.load('Wall_Block_Tall.png'),
                   'wall': pygame.image.load('Wood_Block_Tall.png'),
                   'inside floor': pygame.image.load('Plain_Block.png'),
@@ -85,6 +86,7 @@ def main():
     # PLAYERIMAGES is a list of all possible characters the player can be.
     # currentImage is the index of the player's current player image.
     currentImage = 0
+    BOYIMAGE_IDX = 1
     PLAYERIMAGES = [IMAGESDICT['princess'],
                     IMAGESDICT['boy'],
                     IMAGESDICT['catgirl'],
@@ -565,7 +567,10 @@ def drawMap(mapObj, gameStateObj, goals):
                     # A goal AND star are on this space, draw goal first.
                     mapSurf.blit(IMAGESDICT['covered goal'], spaceRect)
                 # Then draw the star sprite.
-                mapSurf.blit(IMAGESDICT['star'], spaceRect)
+                if currentImage == BOYIMAGE_IDX:
+                    mapSurf.blit(IMAGESDICT['cake'], spaceRect)
+                else:
+                    mapSurf.blit(IMAGESDICT['star'], spaceRect)
             elif (x, y) in goals:
                 # Draw a goal without a star on it.
                 mapSurf.blit(IMAGESDICT['uncovered goal'], spaceRect)
