@@ -35,7 +35,7 @@ RIGHT = 'right'
 
 
 def main():
-    global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage, BOYIMAGE_IDX
+    global FPSCLOCK, DISPLAYSURF, IMAGESDICT, TILEMAPPING, OUTSIDEDECOMAPPING, BASICFONT, PLAYERIMAGES, currentImage
 
     # Pygame initialization and basic set up of the global variables.
     pygame.init()
@@ -86,12 +86,13 @@ def main():
     # PLAYERIMAGES is a list of all possible characters the player can be.
     # currentImage is the index of the player's current player image.
     currentImage = 0
-    BOYIMAGE_IDX = 1
-    PLAYERIMAGES = [IMAGESDICT['princess'],
-                    IMAGESDICT['boy'],
-                    IMAGESDICT['catgirl'],
-                    IMAGESDICT['horngirl'],
-                    IMAGESDICT['pinkgirl']]
+    PLAYERIMAGES = [
+        ('princess', IMAGESDICT['princess']),
+        ('boy', IMAGESDICT['boy']),
+        ('catgirl', IMAGESDICT['catgirl']),
+        ('horngirl', IMAGESDICT['horngirl']),
+        ('pinkgirl', IMAGESDICT['pinkgirl'])
+    ]
 
     startScreen() # show the title screen until the user presses a key
 
@@ -539,6 +540,10 @@ def drawMap(mapObj, gameStateObj, goals):
     stars. This function does not call pygame.display.update(), nor
     does it draw the "Level" and "Steps" text in the corner."""
 
+    # Get current player name and image
+    playerName, playerImage = PLAYERIMAGES[currentImage]
+
+
     # mapSurf will be the single Surface object that the tiles are drawn
     # on, so that it is easy to position the entire map on the DISPLAYSURF
     # Surface object. First, the width and height must be calculated.
@@ -567,7 +572,7 @@ def drawMap(mapObj, gameStateObj, goals):
                     # A goal AND star are on this space, draw goal first.
                     mapSurf.blit(IMAGESDICT['covered goal'], spaceRect)
                 # Then draw the star sprite.
-                if currentImage == BOYIMAGE_IDX:
+                if playerName == 'boy':
                     mapSurf.blit(IMAGESDICT['cake'], spaceRect)
                 else:
                     mapSurf.blit(IMAGESDICT['star'], spaceRect)
@@ -580,7 +585,7 @@ def drawMap(mapObj, gameStateObj, goals):
                 # Note: The value "currentImage" refers
                 # to a key in "PLAYERIMAGES" which has the
                 # specific player image we want to show.
-                mapSurf.blit(PLAYERIMAGES[currentImage], spaceRect)
+                mapSurf.blit(playerImage, spaceRect)
 
     return mapSurf
 
