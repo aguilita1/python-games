@@ -56,6 +56,9 @@ def main():
                   'covered goal': pygame.image.load('Selector.png'),
                   'star': pygame.image.load('Star.png'),
                   'cake': pygame.image.load('bday-cake-85x50.png'),
+                  'yarnball': pygame.image.load('cat-playing-yarn-ball-50x85.png'),
+                  'strawberry': pygame.image.load('starberry-50x85.png'),
+                  'axolotl': pygame.image.load('axolotl-50x85.png'),
                   'corner': pygame.image.load('Wall_Block_Tall.png'),
                   'wall': pygame.image.load('Wood_Block_Tall.png'),
                   'inside floor': pygame.image.load('Plain_Block.png'),
@@ -574,6 +577,12 @@ def drawMap(mapObj, gameStateObj, goals):
                 # Then draw the star sprite.
                 if playerName == 'boy':
                     mapSurf.blit(IMAGESDICT['cake'], spaceRect)
+                elif playerName == 'catgirl':
+                    mapSurf.blit(IMAGESDICT['yarnball'], spaceRect)
+                elif playerName == 'pinkgirl':
+                    mapSurf.blit(IMAGESDICT['strawberry'], spaceRect)
+                elif playerName == 'horngirl':
+                    mapSurf.blit(IMAGESDICT['axolotl'], spaceRect)
                 else:
                     mapSurf.blit(IMAGESDICT['star'], spaceRect)
             elif (x, y) in goals:
