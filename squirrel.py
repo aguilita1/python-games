@@ -27,9 +27,9 @@ GAMEOVERTIME = 4     # how long the "game over" text stays on the screen in seco
 MAXHEALTH = 3        # how much health the player starts with
 
 NUMGRASS = 80        # number of grass objects in the active area
-NUMSQUIRRELS = 30    # number of squirrels in the active area
-SQUIRRELMINSPEED = 3 # slowest squirrel speed
-SQUIRRELMAXSPEED = 7 # fastest squirrel speed
+NUMSQUIRRELS = 10    # number of squirrels in the active area
+SQUIRRELMINSPEED = 5 # slowest squirrel speed
+SQUIRRELMAXSPEED = 9 # fastest squirrel speed
 DIRCHANGEFREQ = 2    # % chance of direction change per frame
 LEFT = 'left'
 RIGHT = 'right'
