@@ -44,7 +44,9 @@ Keys used by all three data structures:
 Player data structure keys:
     'surface' - the pygame.Surface object that stores the image of the Orca which will be drawn to the screen.
     'facing' - either set to LEFT or RIGHT, stores which direction the player is facing.
-    'size' - the width and height of the player in pixels. (The width & height are always the same.)
+    'aspect_ratio' - dimension of player image, height / width (The play image width & height are always same aspect ratio)
+    'width' - the width of the player in pixels
+    'height' - the width of the player in pixels
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
     'health' - an integer showing how many more times the player can be hit by a larger squid before dying.
 Enemy squid data structure keys:
@@ -53,6 +55,7 @@ Enemy squid data structure keys:
     'movey' - how many pixels per frame the squid moves vertically. A negative integer is moving up, a positive moving down.
     'width' - the width of the squid's image, in pixels
     'height' - the height of the squid's image, in pixels
+    'buffer' - helps player eat bigger meals, higher number easier, lower number harder. Recommend keeping around 2.5 to 3 because it gets hard to determine
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
     'bouncerate' - how quickly the squid bounces. A lower number means a quicker bounce.
     'bounceheight' - how high (in pixels) the squid bounces
@@ -118,7 +121,7 @@ def runGame():
                  'height': int(STARTSIZE * (10 / 17)),
                  'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * (10 / 17)))),
                  'facing': LEFT,
-                 'size': STARTSIZE,
+                 'buffer': 3.00, # buffer to help player big meals
                  'x': HALF_WINWIDTH,
                  'y': HALF_WINHEIGHT,
                  'bounce':0,
@@ -174,8 +177,8 @@ def runGame():
             squidObjs.append(makeNewSquid(camerax, cameray))
 
         # adjust camerax and cameray if beyond the "camera slack"
-        playerCenterx = playerObj['x'] + int(playerObj['size'] / 2)
-        playerCentery = playerObj['y'] + int(playerObj['size'] / 2)
+        playerCenterx = playerObj['x'] + int(playerObj['width'] / 2)
+        playerCentery = playerObj['y'] + int(playerObj['height'] / 2)
         if (camerax + HALF_WINWIDTH) - playerCenterx > CAMERASLACK:
             camerax = playerCenterx + CAMERASLACK - HALF_WINWIDTH
         elif playerCenterx - (camerax + HALF_WINWIDTH) > CAMERASLACK:
@@ -234,13 +237,13 @@ def runGame():
                     moveRight = False
                     moveLeft = True
                     if playerObj['facing'] != LEFT: # change player image
-                        playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['size'], playerObj['size']))
+                        playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['width'], playerObj['height']))
                     playerObj['facing'] = LEFT
                 elif event.key in (K_RIGHT, K_d):
                     moveLeft = False
                     moveRight = True
                     if playerObj['facing'] != RIGHT: # change player image
-                        playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['size'], playerObj['size']))
+                        playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['width'], playerObj['height']))
                     playerObj['facing'] = RIGHT
                 elif winMode and event.key == K_r:
                     return
@@ -282,7 +285,7 @@ def runGame():
                 if 'rect' in sqObj and playerObj['rect'].colliderect(sqObj['rect']):
                     # a player/squid collision has occurred
 
-                    if sqObj['width'] * sqObj['height'] <= playerObj['width'] * playerObj['height'] * 0.95:  # 5% buffer to help player
+                    if sqObj['width'] * sqObj['height'] <= playerObj['width'] * playerObj['height'] * playerObj['buffer']:
                         # player is larger and eats the squid
                         playerObj['width'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
                         playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
