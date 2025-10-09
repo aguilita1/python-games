@@ -47,6 +47,8 @@ Player data structure keys:
     'aspect_ratio' - dimension of player image, height / width (The play image width & height are always same aspect ratio)
     'width' - the width of the player in pixels
     'height' - the width of the player in pixels
+    'buffer' - helps player eat bigger meals, higher number easier, lower number harder. Recommend keeping around 2.5 to 3 because it gets hard to determine
+    'width_apex_predator' - when with achieved turns off buffer and adds bigger squids
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
     'health' - an integer showing how many more times the player can be hit by a larger squid before dying.
 Enemy squid data structure keys:
@@ -55,7 +57,6 @@ Enemy squid data structure keys:
     'movey' - how many pixels per frame the squid moves vertically. A negative integer is moving up, a positive moving down.
     'width' - the width of the squid's image, in pixels
     'height' - the height of the squid's image, in pixels
-    'buffer' - helps player eat bigger meals, higher number easier, lower number harder. Recommend keeping around 2.5 to 3 because it gets hard to determine
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
     'bouncerate' - how quickly the squid bounces. A lower number means a quicker bounce.
     'bounceheight' - how high (in pixels) the squid bounces
@@ -87,6 +88,11 @@ def main():
     while True:
         runGame()
 
+def get_image_aspect_ratio(image):
+    """Returns the aspect ratio (height / width) of a pygame.Surface image."""
+    width = image.get_width()
+    height = image.get_height()
+    return height / width
 
 def runGame():
     # set up variables for the start of a new game
@@ -125,11 +131,16 @@ def runGame():
 
     grassObjs = []    # stores all the grass objects in the game
     squidObjs = [] # stores all the non-player squid objects
+
+    # Calculate dynamically image aspect ratio
+    squidImgAspectRatio = get_image_aspect_ratio(R_SQUID_IMG)
+    playerImgAspectRatio = get_image_aspect_ratio(R_ORCA_IMG)
+
     # stores the player object:
-    playerObj = {'aspect_ratio': 10 / 17,  # height / width for 425x250
+    playerObj = {'aspect_ratio': playerImgAspectRatio,
                  'width': STARTSIZE,
-                 'height': int(STARTSIZE * (10 / 17)),
-                 'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * (10 / 17)))),
+                 'height': int(STARTSIZE * playerImgAspectRatio),
+                 'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * playerImgAspectRatio))),
                  'facing': LEFT,
                  'buffer': 2.50, # buffer to help player big meals
                  'width_apex_predator': 150, # reduce cheat mode because most meals edible
@@ -185,7 +196,7 @@ def runGame():
         while len(grassObjs) < NUMGRASS:
             grassObjs.append(makeNewGrass(camerax, cameray))
         while len(squidObjs) < NUMSQUIDS:
-            squidObjs.append(makeNewSquid(camerax, cameray, apexPredatorMode))
+            squidObjs.append(makeNewSquid(camerax, cameray, squidImgAspectRatio, apexPredatorMode))
 
         # adjust camerax and cameray if beyond the "camera slack"
         playerCenterx = playerObj['x'] + int(playerObj['width'] / 2)
@@ -392,9 +403,8 @@ def getRandomOffCameraPos(camerax, cameray, objWidth, objHeight):
             return x, y
 
 
-def makeNewSquid(camerax, cameray,  apexPredatorMode=False):
+def makeNewSquid(camerax, cameray, imgAspectRatio, apexPredatorMode=False):
     sq = {}
-    aspect_ratio = 85 / 50  # keep original squid image ratio (height / width)
     if apexPredatorMode:
         generalSize = random.randint(15, 40)
         multiplier = random.randint(2, 4)
@@ -404,7 +414,7 @@ def makeNewSquid(camerax, cameray,  apexPredatorMode=False):
 
     base_width = (generalSize + random.randint(0, 10)) * multiplier
     sq['width'] = base_width
-    sq['height'] = int(base_width * aspect_ratio)
+    sq['height'] = int(base_width * imgAspectRatio) # keep original squid image ratio (height / width)
     sq['x'], sq['y'] = getRandomOffCameraPos(camerax, cameray, sq['width'], sq['height'])
     sq['movex'] = getRandomVelocity()
     sq['movey'] = getRandomVelocity()
