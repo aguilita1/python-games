@@ -282,7 +282,7 @@ def runGame():
                 if 'rect' in sqObj and playerObj['rect'].colliderect(sqObj['rect']):
                     # a player/squid collision has occurred
 
-                    if sqObj['width'] * sqObj['height'] <= playerObj['width'] * playerObj['height']:
+                    if sqObj['width'] * sqObj['height'] <= playerObj['width'] * playerObj['height'] * 0.95:  # 5% buffer to help player
                         # player is larger and eats the squid
                         playerObj['width'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
                         playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
