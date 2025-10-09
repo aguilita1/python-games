@@ -75,7 +75,7 @@ def main():
     BASICFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # load the image files
-    L_SQUID_IMG = pygame.image.load('squid-50x85.png')
+    L_SQUID_IMG = pygame.image.load('squid-200x340.png')
     R_SQUID_IMG = pygame.transform.flip(L_SQUID_IMG, True, False)
 
     R_ORCA_IMG = pygame.image.load('orca-425x250.png')
