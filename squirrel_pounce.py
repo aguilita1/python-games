@@ -25,7 +25,7 @@ BOUNCEHEIGHT = 30    # how high the player bounces
 STARTSIZE = 25       # how big the player starts off
 WINSIZE = 300        # how big the player needs to be to win
 INVULNTIME = 2       # how long the player is invulnerable after being hit in seconds
-GAMEOVERTIME = 4     # how long the "game over" text stays on the screen in seconds
+MSG_DISPLAY_TIME = 6 # how long the message like "game over" text stays on the screen in seconds
 MAXHEALTH = 3        # how much health the player starts with
 
 NUMGRASS = 80        # number of grass objects in the active area
@@ -111,37 +111,6 @@ def runGame():
     # create the surfaces to hold game text  
     gameOverSurfs, gameOverRects = getWrappedGameOverMessage()
     
-    # gameOverMessages = [
-    #     "Game Over - turns out, squirrels fight dirty!",
-    #     "Game Over - you were no match for their acorn gnashing!",
-    #     "Game Over - all that is left are echoes of acorn crunching ... and your shattered pride.",
-    #     "Game Over - your hunt ends in the hollow silence of defeat and echoes of acorn nibbling!",
-    #     "Game Over - Chomp, chomp, chomp... that was *your* tail.",
-    #     "Game Over - Acorns weren't the only thing on the menu.",
-    #     "Game Over - The squirrels feast again.",
-    #     "Game Over - You were no match for their nutty gnashers.",
-    #     "Game Over - The forest echoes with squirrelly chewing... and your defeat.",
-    #     "Game Over - the acorn alliance prevails!"
-    # ]
-    # # Pick a message and wrap it
-    # chosenGameOverMsg = random.choice(gameOverMessages)
-    # wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
-
-    # # Render each line into a surface
-    # gameOverSurfs = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
-    # gameOverRects = [surf.get_rect() for surf in gameOverSurfs]
-
-    # # Center all lines vertically around HALF_WINHEIGHT
-    # total_height = sum(rect.height for rect in gameOverRects) + (len(gameOverRects) - 1) * 5  # add spacing
-    # start_y = HALF_WINHEIGHT - total_height // 2
-
-    # for rect in gameOverRects:
-    #     rect.centerx = HALF_WINWIDTH
-
-    # # Apply vertical positioning
-    # for i, rect in enumerate(gameOverRects):
-    #     rect.top = start_y + i * (rect.height + 5)
-
     # create the Apex Predator surface
     apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
     apexPredatorSurf = apexPredatorSurf.convert_alpha()  # enables alpha transparency
@@ -372,7 +341,7 @@ def runGame():
             # game is over, show "game over" text
             for i in range(len(gameOverSurfs)):
                 DISPLAYSURF.blit(gameOverSurfs[i], gameOverRects[i])
-            if time.time() - gameOverStartTime > GAMEOVERTIME:
+            if time.time() - gameOverStartTime > MSG_DISPLAY_TIME:
                 return # end the current game
 
         # check if the player has won.
@@ -383,8 +352,8 @@ def runGame():
         # Show Apex Predator message with fade-out
         if apexPredatorMode and apexPredatorStartTime:
             elapsed = time.time() - apexPredatorStartTime
-            if elapsed <= 5.0:
-                alpha = max(0, int(255 * (1 - elapsed / 5.0)))  # fade from 255 to 0
+            if elapsed <= MSG_DISPLAY_TIME:
+                alpha = max(0, int(255 * (1 - elapsed / MSG_DISPLAY_TIME)))  # fade from 255 to 0
                 tempSurf = apexPredatorSurf.copy()
                 tempSurf.set_alpha(alpha)
                 DISPLAYSURF.blit(tempSurf, apexPredatorRect)
