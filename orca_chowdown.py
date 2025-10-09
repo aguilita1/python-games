@@ -132,6 +132,7 @@ def runGame():
                  'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * (10 / 17)))),
                  'facing': LEFT,
                  'buffer': 2.50, # buffer to help player big meals
+                 'width_apex_predator': 150, # reduce cheat mode because most meals edible
                  'x': HALF_WINWIDTH,
                  'y': HALF_WINHEIGHT,
                  'bounce':0,
@@ -184,7 +185,7 @@ def runGame():
         while len(grassObjs) < NUMGRASS:
             grassObjs.append(makeNewGrass(camerax, cameray))
         while len(squidObjs) < NUMSQUIDS:
-            squidObjs.append(makeNewSquid(camerax, cameray))
+            squidObjs.append(makeNewSquid(camerax, cameray, apexPredatorMode))
 
         # adjust camerax and cameray if beyond the "camera slack"
         playerCenterx = playerObj['x'] + int(playerObj['width'] / 2)
@@ -301,7 +302,7 @@ def runGame():
                         playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
 
                         # Reduce buffer to 1.0 once player is large enough to eat most meals
-                        if playerObj['width'] >= 150 and not apexPredatorMode:
+                        if playerObj['width'] >= playerObj['width_apex_predator'] and not apexPredatorMode:
                             playerObj['buffer'] = 1.0
                             apexPredatorMode = True
                             apexPredatorStartTime = time.time()
@@ -391,11 +392,16 @@ def getRandomOffCameraPos(camerax, cameray, objWidth, objHeight):
             return x, y
 
 
-def makeNewSquid(camerax, cameray):
+def makeNewSquid(camerax, cameray,  apexPredatorMode=False):
     sq = {}
     aspect_ratio = 85 / 50  # keep original squid image ratio (height / width)
-    generalSize = random.randint(5, 25)
-    multiplier = random.randint(1, 3)
+    if apexPredatorMode:
+        generalSize = random.randint(15, 40)
+        multiplier = random.randint(2, 4)
+    else:
+        generalSize = random.randint(5, 25)
+        multiplier = random.randint(1, 3)
+
     base_width = (generalSize + random.randint(0, 10)) * multiplier
     sq['width'] = base_width
     sq['height'] = int(base_width * aspect_ratio)
