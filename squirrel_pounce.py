@@ -121,11 +121,24 @@ def runGame():
         "Game Over - The forest echoes with squirrelly chewing... and your defeat.",
         "Game Over - the acorn alliance prevails!"
     ]
+    # Pick a message and wrap it
     chosenGameOverMsg = random.choice(gameOverMessages)
-    gameOverSurf = BASICFONT.render(chosenGameOverMsg, True, WHITE)
+    wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
 
-    gameOverRect = gameOverSurf.get_rect()
-    gameOverRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
+    # Render each line into a surface
+    gameOverSurfs = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
+    gameOverRects = [surf.get_rect() for surf in gameOverSurfs]
+
+    # Center all lines vertically around HALF_WINHEIGHT
+    total_height = sum(rect.height for rect in gameOverRects) + (len(gameOverRects) - 1) * 5  # add spacing
+    start_y = HALF_WINHEIGHT - total_height // 2
+
+    for rect in gameOverRects:
+        rect.centerx = HALF_WINWIDTH
+
+    # Apply vertical positioning
+    for i, rect in enumerate(gameOverRects):
+        rect.top = start_y + i * (rect.height + 5)
 
     # create the Apex Predator surface
     apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
@@ -355,7 +368,8 @@ def runGame():
                             gameOverStartTime = time.time()
         else:
             # game is over, show "game over" text
-            DISPLAYSURF.blit(gameOverSurf, gameOverRect)
+            for i in range(len(gameOverSurfs)):
+                DISPLAYSURF.blit(gameOverSurfs[i], gameOverRects[i])
             if time.time() - gameOverStartTime > GAMEOVERTIME:
                 return # end the current game
 
@@ -463,6 +477,21 @@ def isOutsideActiveArea(camerax, cameray, obj):
     objRect = pygame.Rect(obj['x'], obj['y'], obj['width'], obj['height'])
     return not boundsRect.colliderect(objRect)
 
+def wrap_text(text, font, max_width):
+    """Wrap text into lines that fit within max_width when rendered with the font."""
+    words = text.split(' ')
+    lines = []
+    current_line = ''
+
+    for word in words:
+        test_line = current_line + word + ' '
+        if font.size(test_line)[0] <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line.strip())
+            current_line = word + ' '
+    lines.append(current_line.strip())
+    return lines
 
 if __name__ == '__main__':
     main()
