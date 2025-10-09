@@ -1,4 +1,4 @@
-# Squirrel Eat Squirrel (a 2D Katamari Damacy clone)
+# Orca Chowndown (a 2D Katamari Damacy clone)
 # By Al Sweigart al@inventwithpython.com
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
@@ -16,7 +16,7 @@ GRASSCOLOR = (0, 0, 255)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
-CAMERASLACK = 90     # how far from the center the squirrel moves before moving the camera
+CAMERASLACK = 90     # how far from the center the squid moves before moving the camera
 MOVERATE = 9         # how fast the player moves
 BOUNCERATE = 6       # how fast the player bounces (large is slower)
 BOUNCEHEIGHT = 30    # how high the player bounces
@@ -27,41 +27,41 @@ GAMEOVERTIME = 4     # how long the "game over" text stays on the screen in seco
 MAXHEALTH = 3        # how much health the player starts with
 
 NUMGRASS = 80        # number of grass objects in the active area
-NUMSQUIRRELS = 30    # number of squirrels in the active area
-SQUIRRELMINSPEED = 3 # slowest squirrel speed
-SQUIRRELMAXSPEED = 5 # fastest squirrel speed
+NUMSQUIDS = 30    # number of squids in the active area
+SQUIDMINSPEED = 3 # slowest squid speed
+SQUIDMAXSPEED = 5 # fastest squid speed
 DIRCHANGEFREQ = 2    # % chance of direction change per frame
 LEFT = 'left'
 RIGHT = 'right'
 
 """
-This program has three data structures to represent the player, enemy squirrels, and grass background objects. The data structures are dictionaries with the following keys:
+This program has three data structures to represent the player orca, enemy squids, and grass background objects. The data structures are dictionaries with the following keys:
 
 Keys used by all three data structures:
     'x' - the left edge coordinate of the object in the game world (not a pixel coordinate on the screen)
     'y' - the top edge coordinate of the object in the game world (not a pixel coordinate on the screen)
     'rect' - the pygame.Rect object representing where on the screen the object is located.
 Player data structure keys:
-    'surface' - the pygame.Surface object that stores the image of the squirrel which will be drawn to the screen.
+    'surface' - the pygame.Surface object that stores the image of the Orca which will be drawn to the screen.
     'facing' - either set to LEFT or RIGHT, stores which direction the player is facing.
     'size' - the width and height of the player in pixels. (The width & height are always the same.)
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
-    'health' - an integer showing how many more times the player can be hit by a larger squirrel before dying.
-Enemy Squirrel data structure keys:
-    'surface' - the pygame.Surface object that stores the image of the squirrel which will be drawn to the screen.
-    'movex' - how many pixels per frame the squirrel moves horizontally. A negative integer is moving to the left, a positive to the right.
-    'movey' - how many pixels per frame the squirrel moves vertically. A negative integer is moving up, a positive moving down.
-    'width' - the width of the squirrel's image, in pixels
-    'height' - the height of the squirrel's image, in pixels
+    'health' - an integer showing how many more times the player can be hit by a larger squid before dying.
+Enemy squid data structure keys:
+    'surface' - the pygame.Surface object that stores the image of the squid which will be drawn to the screen.
+    'movex' - how many pixels per frame the squid moves horizontally. A negative integer is moving to the left, a positive to the right.
+    'movey' - how many pixels per frame the squid moves vertically. A negative integer is moving up, a positive moving down.
+    'width' - the width of the squid's image, in pixels
+    'height' - the height of the squid's image, in pixels
     'bounce' - represents at what point in a bounce the player is in. 0 means standing (no bounce), up to BOUNCERATE (the completion of the bounce)
-    'bouncerate' - how quickly the squirrel bounces. A lower number means a quicker bounce.
-    'bounceheight' - how high (in pixels) the squirrel bounces
+    'bouncerate' - how quickly the squid bounces. A lower number means a quicker bounce.
+    'bounceheight' - how high (in pixels) the squid bounces
 Grass data structure keys:
     'grassImage' - an integer that refers to the index of the pygame.Surface object in GRASSIMAGES used for this grass object
 """
 
 def main():
-    global FPSCLOCK, DISPLAYSURF, BASICFONT, L_SQUIR_IMG, R_SQUIR_IMG, GRASSIMAGES, L_FOX_IMG, R_FOX_IMG
+    global FPSCLOCK, DISPLAYSURF, BASICFONT, L_SQUID_IMG, R_SQUID_IMG, GRASSIMAGES, L_ORCA_IMG, R_ORCA_IMG
 
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
@@ -71,11 +71,11 @@ def main():
     BASICFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # load the image files
-    L_SQUIR_IMG = pygame.image.load('squid-50x85.png')
-    R_SQUIR_IMG = pygame.transform.flip(L_SQUIR_IMG, True, False)
+    L_SQUID_IMG = pygame.image.load('squid-50x85.png')
+    R_SQUID_IMG = pygame.transform.flip(L_SQUID_IMG, True, False)
 
-    R_FOX_IMG = pygame.image.load('orca-50x85.png')
-    L_FOX_IMG = pygame.transform.flip(R_FOX_IMG, True, False)
+    R_ORCA_IMG = pygame.image.load('orca-50x85.png')
+    L_ORCA_IMG = pygame.transform.flip(R_ORCA_IMG, True, False)
 
     GRASSIMAGES = []
     for i in range(1, 5):
@@ -111,9 +111,9 @@ def runGame():
     cameray = 0
 
     grassObjs = []    # stores all the grass objects in the game
-    squirrelObjs = [] # stores all the non-player squirrel objects
+    squidObjs = [] # stores all the non-player squid objects
     # stores the player object:
-    playerObj = {'surface': pygame.transform.scale(L_FOX_IMG, (STARTSIZE, STARTSIZE)),
+    playerObj = {'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, STARTSIZE)),
                  'facing': LEFT,
                  'size': STARTSIZE,
                  'x': HALF_WINWIDTH,
@@ -137,9 +137,9 @@ def runGame():
         if invulnerableMode and time.time() - invulnerableStartTime > INVULNTIME:
             invulnerableMode = False
 
-        # move all the squirrels
-        for sObj in squirrelObjs:
-            # move the squirrel, and adjust for their bounce
+        # move all the squids
+        for sObj in squidObjs:
+            # move the squid, and adjust for their bounce
             sObj['x'] += sObj['movex']
             sObj['y'] += sObj['movey']
             sObj['bounce'] += 1
@@ -151,24 +151,24 @@ def runGame():
                 sObj['movex'] = getRandomVelocity()
                 sObj['movey'] = getRandomVelocity()
                 if sObj['movex'] > 0: # faces right
-                    sObj['surface'] = pygame.transform.scale(R_SQUIR_IMG, (sObj['width'], sObj['height']))
+                    sObj['surface'] = pygame.transform.scale(R_SQUID_IMG, (sObj['width'], sObj['height']))
                 else: # faces left
-                    sObj['surface'] = pygame.transform.scale(L_SQUIR_IMG, (sObj['width'], sObj['height']))
+                    sObj['surface'] = pygame.transform.scale(L_SQUID_IMG, (sObj['width'], sObj['height']))
 
 
         # go through all the objects and see if any need to be deleted.
         for i in range(len(grassObjs) - 1, -1, -1):
             if isOutsideActiveArea(camerax, cameray, grassObjs[i]):
                 del grassObjs[i]
-        for i in range(len(squirrelObjs) - 1, -1, -1):
-            if isOutsideActiveArea(camerax, cameray, squirrelObjs[i]):
-                del squirrelObjs[i]
+        for i in range(len(squidObjs) - 1, -1, -1):
+            if isOutsideActiveArea(camerax, cameray, squidObjs[i]):
+                del squidObjs[i]
 
-        # add more grass & squirrels if we don't have enough.
+        # add more grass & squids if we don't have enough.
         while len(grassObjs) < NUMGRASS:
             grassObjs.append(makeNewGrass(camerax, cameray))
-        while len(squirrelObjs) < NUMSQUIRRELS:
-            squirrelObjs.append(makeNewSquirrel(camerax, cameray))
+        while len(squidObjs) < NUMSQUIDS:
+            squidObjs.append(makeNewSquid(camerax, cameray))
 
         # adjust camerax and cameray if beyond the "camera slack"
         playerCenterx = playerObj['x'] + int(playerObj['size'] / 2)
@@ -194,8 +194,8 @@ def runGame():
             DISPLAYSURF.blit(GRASSIMAGES[gObj['grassImage']], gRect)
 
 
-        # draw the other squirrels
-        for sObj in squirrelObjs:
+        # draw the other squids
+        for sObj in squidObjs:
             sObj['rect'] = pygame.Rect( (sObj['x'] - camerax,
                                          sObj['y'] - cameray - getBounceAmount(sObj['bounce'], sObj['bouncerate'], sObj['bounceheight']),
                                          sObj['width'],
@@ -203,7 +203,7 @@ def runGame():
             DISPLAYSURF.blit(sObj['surface'], sObj['rect'])
 
 
-        # draw the player squirrel
+        # draw the player orca
         flashIsOn = round(time.time(), 1) * 10 % 2 == 1
         if not gameOverMode and not (invulnerableMode and flashIsOn):
             playerObj['rect'] = pygame.Rect( (playerObj['x'] - camerax,
@@ -231,19 +231,19 @@ def runGame():
                     moveRight = False
                     moveLeft = True
                     if playerObj['facing'] != LEFT: # change player image
-                        playerObj['surface'] = pygame.transform.scale(L_FOX_IMG, (playerObj['size'], playerObj['size']))
+                        playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['size'], playerObj['size']))
                     playerObj['facing'] = LEFT
                 elif event.key in (K_RIGHT, K_d):
                     moveLeft = False
                     moveRight = True
                     if playerObj['facing'] != RIGHT: # change player image
-                        playerObj['surface'] = pygame.transform.scale(R_FOX_IMG, (playerObj['size'], playerObj['size']))
+                        playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['size'], playerObj['size']))
                     playerObj['facing'] = RIGHT
                 elif winMode and event.key == K_r:
                     return
 
             elif event.type == KEYUP:
-                # stop moving the player's squirrel
+                # stop moving the player's orca
                 if event.key in (K_LEFT, K_a):
                     moveLeft = False
                 elif event.key in (K_RIGHT, K_d):
@@ -273,21 +273,21 @@ def runGame():
             if playerObj['bounce'] > BOUNCERATE:
                 playerObj['bounce'] = 0 # reset bounce amount
 
-            # check if the player has collided with any squirrels
-            for i in range(len(squirrelObjs)-1, -1, -1):
-                sqObj = squirrelObjs[i]
+            # check if the player has collided with any squids
+            for i in range(len(squidObjs)-1, -1, -1):
+                sqObj = squidObjs[i]
                 if 'rect' in sqObj and playerObj['rect'].colliderect(sqObj['rect']):
-                    # a player/squirrel collision has occurred
+                    # a player/squid collision has occurred
 
                     if sqObj['width'] * sqObj['height'] <= playerObj['size']**2:
-                        # player is larger and eats the squirrel
+                        # player is larger and eats the squid
                         playerObj['size'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
-                        del squirrelObjs[i]
+                        del squidObjs[i]
 
                         if playerObj['facing'] == LEFT:
-                            playerObj['surface'] = pygame.transform.scale(L_FOX_IMG, (playerObj['size'], playerObj['size']))
+                            playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['size'], playerObj['size']))
                         if playerObj['facing'] == RIGHT:
-                            playerObj['surface'] = pygame.transform.scale(R_FOX_IMG, (playerObj['size'], playerObj['size']))
+                            playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['size'], playerObj['size']))
 
                         if playerObj['size'] > WINSIZE:
                             winMode = True # turn on "win mode"
@@ -337,7 +337,7 @@ def getBounceAmount(currentBounce, bounceRate, bounceHeight):
     return int(math.sin( (math.pi / float(bounceRate)) * currentBounce ) * bounceHeight)
 
 def getRandomVelocity():
-    speed = random.randint(SQUIRRELMINSPEED, SQUIRRELMAXSPEED)
+    speed = random.randint(SQUIDMINSPEED, SQUIDMAXSPEED)
     if random.randint(0, 1) == 0:
         return speed
     else:
@@ -357,7 +357,7 @@ def getRandomOffCameraPos(camerax, cameray, objWidth, objHeight):
             return x, y
 
 
-def makeNewSquirrel(camerax, cameray):
+def makeNewSquid(camerax, cameray):
     sq = {}
     generalSize = random.randint(5, 25)
     multiplier = random.randint(1, 3)
@@ -366,10 +366,10 @@ def makeNewSquirrel(camerax, cameray):
     sq['x'], sq['y'] = getRandomOffCameraPos(camerax, cameray, sq['width'], sq['height'])
     sq['movex'] = getRandomVelocity()
     sq['movey'] = getRandomVelocity()
-    if sq['movex'] < 0: # squirrel is facing left
-        sq['surface'] = pygame.transform.scale(L_SQUIR_IMG, (sq['width'], sq['height']))
-    else: # squirrel is facing right
-        sq['surface'] = pygame.transform.scale(R_SQUIR_IMG, (sq['width'], sq['height']))
+    if sq['movex'] < 0: # squid is facing left
+        sq['surface'] = pygame.transform.scale(L_SQUID_IMG, (sq['width'], sq['height']))
+    else: # squid is facing right
+        sq['surface'] = pygame.transform.scale(R_SQUID_IMG, (sq['width'], sq['height']))
     sq['bounce'] = 0
     sq['bouncerate'] = random.randint(10, 18)
     sq['bounceheight'] = random.randint(10, 50)
