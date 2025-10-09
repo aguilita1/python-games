@@ -96,10 +96,20 @@ def runGame():
     gameOverStartTime = 0     # time the player lost
     winMode = False           # if the player has won
 
+    # Apex Predator mode
+    apexPredatorMode = False
+    apexPredatorStartTime = None
+
     # create the surfaces to hold game text
     gameOverSurf = BASICFONT.render('Game Over - Sunken into the Abyss', True, WHITE)
     gameOverRect = gameOverSurf.get_rect()
     gameOverRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
+
+    # create the Apex Predator surface
+    apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
+    apexPredatorSurf = apexPredatorSurf.convert_alpha()  # enables alpha transparency
+    apexPredatorRect = apexPredatorSurf.get_rect()
+    apexPredatorRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT - 50)
 
     winSurf = BASICFONT.render('You have achieved Final Fin!', True, WHITE)
     winRect = winSurf.get_rect()
@@ -121,7 +131,7 @@ def runGame():
                  'height': int(STARTSIZE * (10 / 17)),
                  'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * (10 / 17)))),
                  'facing': LEFT,
-                 'buffer': 3.00, # buffer to help player big meals
+                 'buffer': 2.50, # buffer to help player big meals
                  'x': HALF_WINWIDTH,
                  'y': HALF_WINHEIGHT,
                  'bounce':0,
@@ -289,6 +299,14 @@ def runGame():
                         # player is larger and eats the squid
                         playerObj['width'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
                         playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
+
+                        # Reduce buffer to 1.0 once player is large enough to eat most meals
+                        if playerObj['width'] >= 150 and not apexPredatorMode:
+                            playerObj['buffer'] = 1.0
+                            apexPredatorMode = True
+                            apexPredatorStartTime = time.time()
+                            print("Buffer reduced to 1.0 - you're now an apex predator!")
+
                         del squidObjs[i]
 
                         if playerObj['facing'] == LEFT:
@@ -317,6 +335,15 @@ def runGame():
         if winMode:
             DISPLAYSURF.blit(winSurf, winRect)
             DISPLAYSURF.blit(winSurf2, winRect2)
+
+        # Show Apex Predator message with fade-out
+        if apexPredatorMode and apexPredatorStartTime:
+            elapsed = time.time() - apexPredatorStartTime
+            if elapsed <= 5.0:
+                alpha = max(0, int(255 * (1 - elapsed / 5.0)))  # fade from 255 to 0
+                tempSurf = apexPredatorSurf.copy()
+                tempSurf.set_alpha(alpha)
+                DISPLAYSURF.blit(tempSurf, apexPredatorRect)
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
