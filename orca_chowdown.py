@@ -74,7 +74,7 @@ def main():
     L_SQUID_IMG = pygame.image.load('squid-50x85.png')
     R_SQUID_IMG = pygame.transform.flip(L_SQUID_IMG, True, False)
 
-    R_ORCA_IMG = pygame.image.load('orca-50x85.png')
+    R_ORCA_IMG = pygame.image.load('orca-425x250.png')
     L_ORCA_IMG = pygame.transform.flip(R_ORCA_IMG, True, False)
 
     GRASSIMAGES = []
@@ -113,7 +113,10 @@ def runGame():
     grassObjs = []    # stores all the grass objects in the game
     squidObjs = [] # stores all the non-player squid objects
     # stores the player object:
-    playerObj = {'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, STARTSIZE)),
+    playerObj = {'aspect_ratio': 10 / 17,  # height / width for 425x250
+                 'width': STARTSIZE,
+                 'height': int(STARTSIZE * (10 / 17)),
+                 'surface': pygame.transform.scale(L_ORCA_IMG, (STARTSIZE, int(STARTSIZE * (10 / 17)))),
                  'facing': LEFT,
                  'size': STARTSIZE,
                  'x': HALF_WINWIDTH,
@@ -207,9 +210,9 @@ def runGame():
         flashIsOn = round(time.time(), 1) * 10 % 2 == 1
         if not gameOverMode and not (invulnerableMode and flashIsOn):
             playerObj['rect'] = pygame.Rect( (playerObj['x'] - camerax,
-                                              playerObj['y'] - cameray - getBounceAmount(playerObj['bounce'], BOUNCERATE, BOUNCEHEIGHT),
-                                              playerObj['size'],
-                                              playerObj['size']) )
+                                            playerObj['y'] - cameray - getBounceAmount(playerObj['bounce'], BOUNCERATE, BOUNCEHEIGHT),
+                                            playerObj['width'],
+                                            playerObj['height']) )
             DISPLAYSURF.blit(playerObj['surface'], playerObj['rect'])
 
 
@@ -281,15 +284,16 @@ def runGame():
 
                     if sqObj['width'] * sqObj['height'] <= playerObj['size']**2:
                         # player is larger and eats the squid
-                        playerObj['size'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
+                        playerObj['width'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
+                        playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
                         del squidObjs[i]
 
                         if playerObj['facing'] == LEFT:
-                            playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['size'], playerObj['size']))
-                        if playerObj['facing'] == RIGHT:
-                            playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['size'], playerObj['size']))
+                            playerObj['surface'] = pygame.transform.scale(L_ORCA_IMG, (playerObj['width'], playerObj['height']))
+                        else:
+                            playerObj['surface'] = pygame.transform.scale(R_ORCA_IMG, (playerObj['width'], playerObj['height']))
 
-                        if playerObj['size'] > WINSIZE:
+                        if playerObj['width'] > WINSIZE:
                             winMode = True # turn on "win mode"
 
                     elif not invulnerableMode:
