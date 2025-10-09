@@ -109,36 +109,38 @@ def runGame():
     apexPredatorStartTime = None
 
     # create the surfaces to hold game text  
-    gameOverMessages = [
-        "Game Over - turns out, squirrels fight dirty!",
-        "Game Over - you were no match for their acorn gnashing!",
-        "Game Over - all that is left are echoes of acorn crunching ... and your shattered pride.",
-        "Game Over - your hunt ends in the hollow silence of defeat and echoes of acorn nibbling!",
-        "Game Over - Chomp, chomp, chomp... that was *your* tail.",
-        "Game Over - Acorns weren't the only thing on the menu.",
-        "Game Over - The squirrels feast again.",
-        "Game Over - You were no match for their nutty gnashers.",
-        "Game Over - The forest echoes with squirrelly chewing... and your defeat.",
-        "Game Over - the acorn alliance prevails!"
-    ]
-    # Pick a message and wrap it
-    chosenGameOverMsg = random.choice(gameOverMessages)
-    wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
+    gameOverSurfs, gameOverRects = getWrappedGameOverMessage()
+    
+    # gameOverMessages = [
+    #     "Game Over - turns out, squirrels fight dirty!",
+    #     "Game Over - you were no match for their acorn gnashing!",
+    #     "Game Over - all that is left are echoes of acorn crunching ... and your shattered pride.",
+    #     "Game Over - your hunt ends in the hollow silence of defeat and echoes of acorn nibbling!",
+    #     "Game Over - Chomp, chomp, chomp... that was *your* tail.",
+    #     "Game Over - Acorns weren't the only thing on the menu.",
+    #     "Game Over - The squirrels feast again.",
+    #     "Game Over - You were no match for their nutty gnashers.",
+    #     "Game Over - The forest echoes with squirrelly chewing... and your defeat.",
+    #     "Game Over - the acorn alliance prevails!"
+    # ]
+    # # Pick a message and wrap it
+    # chosenGameOverMsg = random.choice(gameOverMessages)
+    # wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
 
-    # Render each line into a surface
-    gameOverSurfs = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
-    gameOverRects = [surf.get_rect() for surf in gameOverSurfs]
+    # # Render each line into a surface
+    # gameOverSurfs = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
+    # gameOverRects = [surf.get_rect() for surf in gameOverSurfs]
 
-    # Center all lines vertically around HALF_WINHEIGHT
-    total_height = sum(rect.height for rect in gameOverRects) + (len(gameOverRects) - 1) * 5  # add spacing
-    start_y = HALF_WINHEIGHT - total_height // 2
+    # # Center all lines vertically around HALF_WINHEIGHT
+    # total_height = sum(rect.height for rect in gameOverRects) + (len(gameOverRects) - 1) * 5  # add spacing
+    # start_y = HALF_WINHEIGHT - total_height // 2
 
-    for rect in gameOverRects:
-        rect.centerx = HALF_WINWIDTH
+    # for rect in gameOverRects:
+    #     rect.centerx = HALF_WINWIDTH
 
-    # Apply vertical positioning
-    for i, rect in enumerate(gameOverRects):
-        rect.top = start_y + i * (rect.height + 5)
+    # # Apply vertical positioning
+    # for i, rect in enumerate(gameOverRects):
+    #     rect.top = start_y + i * (rect.height + 5)
 
     # create the Apex Predator surface
     apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
@@ -492,6 +494,43 @@ def wrap_text(text, font, max_width):
             current_line = word + ' '
     lines.append(current_line.strip())
     return lines
+
+def getWrappedGameOverMessage():
+    """Randomly selects and wraps a game over message, returning rendered surfaces and their rects."""
+    
+    # create the surfaces to hold game text  
+    gameOverMessages = [
+        "Game Over - turns out, squirrels fight dirty!",
+        "Game Over - you were no match for their acorn gnashing!",
+        "Game Over - all that is left are echoes of acorn crunching ... and your shattered pride.",
+        "Game Over - your hunt ends in the hollow silence of defeat and echoes of acorn nibbling!",
+        "Game Over - Chomp, chomp, chomp... that was *your* tail.",
+        "Game Over - Acorns weren't the only thing on the menu.",
+        "Game Over - The squirrels feast again.",
+        "Game Over - You were no match for their nutty gnashers.",
+        "Game Over - The forest echoes with squirrelly chewing... and your defeat.",
+        "Game Over - the acorn alliance prevails!"
+    ]
+    # Pick a message and wrap it
+    chosenGameOverMsg = random.choice(gameOverMessages)
+    wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
+
+    # Render each line into a surface
+    surfaces = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
+    rects = [surf.get_rect() for surf in surfaces]
+
+    # Center all lines vertically around HALF_WINHEIGHT
+    total_height = sum(rect.height for rect in rects) + (len(rects) - 1) * 5  # add spacing
+    start_y = HALF_WINHEIGHT - total_height // 2
+
+    for rect in rects:
+        rect.centerx = HALF_WINWIDTH
+
+    # Apply vertical positioning
+    for i, rect in enumerate(rects):
+        rect.top = start_y + i * (rect.height + 5)
+
+    return surfaces, rects
 
 if __name__ == '__main__':
     main()
