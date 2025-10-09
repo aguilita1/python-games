@@ -8,7 +8,7 @@ pygame.display.set_caption("Alpha Test")
 # Load image
 img = pygame.image.load('orca-425x250.png').convert_alpha()
 img.set_alpha(None)  # Disable global alpha
-img.fill((255, 0, 0))  # Fill with red — should completely override image
+img.fill((255, 0, 0))  # Fill with red - should completely override image
 # img = pygame.Surface((425, 250))
 # img.fill((255, 0, 0))
 
