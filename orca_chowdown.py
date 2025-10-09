@@ -364,7 +364,9 @@ def getRandomOffCameraPos(camerax, cameray, objWidth, objHeight):
 def makeNewSquid(camerax, cameray):
     sq = {}
     aspect_ratio = 85 / 50  # keep original squid image ratio (height / width)
-    base_width = random.randint(5, 105)  # or whatever scaling you prefer
+    generalSize = random.randint(5, 25)
+    multiplier = random.randint(1, 3)
+    base_width = (generalSize + random.randint(0, 10)) * multiplier
     sq['width'] = base_width
     sq['height'] = int(base_width * aspect_ratio)
     sq['x'], sq['y'] = getRandomOffCameraPos(camerax, cameray, sq['width'], sq['height'])
