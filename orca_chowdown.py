@@ -25,7 +25,7 @@ BOUNCEHEIGHT = 30    # how high the player bounces
 STARTSIZE = 25       # how big the player starts off
 WINSIZE = 300        # how big the player needs to be to win
 INVULNTIME = 2       # how long the player is invulnerable after being hit in seconds
-GAMEOVERTIME = 4     # how long the "game over" text stays on the screen in seconds
+MSG_DISPLAY_TIME = 6 # how long the message like "game over" text stays on the screen in seconds
 MAXHEALTH = 3        # how much health the player starts with
 
 NUMGRASS = 80        # number of grass objects in the active area
@@ -109,9 +109,7 @@ def runGame():
     apexPredatorStartTime = None
 
     # create the surfaces to hold game text
-    gameOverSurf = BASICFONT.render('Game Over - Sunken into the Abyss', True, WHITE)
-    gameOverRect = gameOverSurf.get_rect()
-    gameOverRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
+    gameOverSurfs, gameOverRects = getWrappedGameOverMessage()
 
     # create the Apex Predator surface
     apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
@@ -341,8 +339,9 @@ def runGame():
                             gameOverStartTime = time.time()
         else:
             # game is over, show "game over" text
-            DISPLAYSURF.blit(gameOverSurf, gameOverRect)
-            if time.time() - gameOverStartTime > GAMEOVERTIME:
+            for i in range(len(gameOverSurfs)):
+                DISPLAYSURF.blit(gameOverSurfs[i], gameOverRects[i])
+            if time.time() - gameOverStartTime > MSG_DISPLAY_TIME:
                 return # end the current game
 
         # check if the player has won.
@@ -353,8 +352,8 @@ def runGame():
         # Show Apex Predator message with fade-out
         if apexPredatorMode and apexPredatorStartTime:
             elapsed = time.time() - apexPredatorStartTime
-            if elapsed <= 5.0:
-                alpha = max(0, int(255 * (1 - elapsed / 5.0)))  # fade from 255 to 0
+            if elapsed <= MSG_DISPLAY_TIME:
+                alpha = max(0, int(255 * (1 - elapsed / MSG_DISPLAY_TIME)))  # fade from 255 to 0
                 tempSurf = apexPredatorSurf.copy()
                 tempSurf.set_alpha(alpha)
                 DISPLAYSURF.blit(tempSurf, apexPredatorRect)
@@ -449,6 +448,60 @@ def isOutsideActiveArea(camerax, cameray, obj):
     objRect = pygame.Rect(obj['x'], obj['y'], obj['width'], obj['height'])
     return not boundsRect.colliderect(objRect)
 
+def wrap_text(text, font, max_width):
+    """Wrap text into lines that fit within max_width when rendered with the font."""
+    words = text.split(' ')
+    lines = []
+    current_line = ''
+
+    for word in words:
+        test_line = current_line + word + ' '
+        if font.size(test_line)[0] <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line.strip())
+            current_line = word + ' '
+    lines.append(current_line.strip())
+    return lines
+
+def getWrappedGameOverMessage():
+    """Randomly selects and wraps a game over message, returning rendered surfaces and their rects."""
+
+    # create the surfaces to hold game text
+    gameOverMessages = [
+        "Game Over - You've sunken into the Abyss.",
+        "Game Over - The squids vanished... and took your dignity with them.",
+        "Game Over - Inked, outflanked, and outwitted.",
+        "Game Over - You dove too deep. The squids were waiting.",
+        "Game Over - Tentacles tighten. The deep claims another.",
+        "Game Over - One orca vs a thousand arms? Bad odds.",
+        "Game Over - The squids inked a masterpiece… and you were the canvas.",
+        "Game Over - Their minds were alien. Their strategy, flawless.",
+        "Game Over - Drenched in ink and regret.",
+        "Game Over - You were the apex predator... until you weren't.",
+        "Game Over - The squids coordinated. You hesitated."
+    ]
+
+    # Pick a message and wrap it
+    chosenGameOverMsg = random.choice(gameOverMessages)
+    wrappedLines = wrap_text(chosenGameOverMsg, BASICFONT, WINWIDTH - 40)  # leave some margin
+
+    # Render each line into a surface
+    surfaces = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
+    rects = [surf.get_rect() for surf in surfaces]
+
+    # Center all lines vertically around HALF_WINHEIGHT
+    total_height = sum(rect.height for rect in rects) + (len(rects) - 1) * 5  # add spacing
+    start_y = HALF_WINHEIGHT - total_height // 2
+
+    for rect in rects:
+        rect.centerx = HALF_WINWIDTH
+
+    # Apply vertical positioning
+    for i, rect in enumerate(rects):
+        rect.top = start_y + i * (rect.height + 5)
+
+    return surfaces, rects
 
 if __name__ == '__main__':
     main()
