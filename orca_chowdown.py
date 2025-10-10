@@ -497,7 +497,7 @@ def playThemeMusic(game_event):
     elif game_event == 'winner':
         pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part1.ogg')
     else:
-        print(f"[Music] Unrecognized game event: {game_event}")
+        print('[Music] Unrecognized game event: ', game_event)
         return  # do not play unknown music
 
     # play once from start of sound file
