@@ -74,8 +74,8 @@ def main():
     L_SQUIR_IMG = pygame.image.load('squirrel.png')
     R_SQUIR_IMG = pygame.transform.flip(L_SQUIR_IMG, True, False)
 
-    L_FOX_IMG = pygame.image.load('fox.png')
-    R_FOX_IMG = pygame.transform.flip(L_FOX_IMG, True, False)
+    R_FOX_IMG = pygame.image.load('fox.png')
+    L_FOX_IMG = pygame.transform.flip(R_FOX_IMG, True, False)
 
     GRASSIMAGES = []
     for i in range(1, 5):
