@@ -490,16 +490,15 @@ def playThemeMusic(game_event):
     """Play music based on game event triggered."""
     pygame.mixer.music.stop()
 
-    match game_event:
-        case 'game_over':
-            pygame.mixer.music.load('assets/sounds/hot-cross-buns-part1.ogg')
-        case 'apex_predator':
-            pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part2.ogg')
-        case 'winner':
-            pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part1.ogg')
-        case _:
-            # log unrecognized event
-            print(f"[Music] Unrecognized game event: {game_event}")
+    if game_event == 'game_over':
+        pygame.mixer.music.load('assets/sounds/hot-cross-buns-part1.ogg')
+    elif game_event == 'apex_predator':
+        pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part2.ogg')
+    elif game_event == 'winner':
+        pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part1.ogg')
+    else:
+        print(f"[Music] Unrecognized game event: {game_event}")
+        return  # do not play unknown music
 
     # play once from start of sound file
     pygame.mixer.music.play(0, 0.0)
