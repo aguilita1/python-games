@@ -203,7 +203,7 @@ def runGame():
         while len(grassObjs) < NUMGRASS:
             grassObjs.append(makeNewGrass(camerax, cameray))
         while len(enemyObjs) < NUM_ENEMIES:
-            enemyObjs.append(makeNewSquid(camerax, cameray, enemyImgAspectRatio, apexPredatorMode))
+            enemyObjs.append(makeNewEnemy(camerax, cameray, enemyImgAspectRatio, apexPredatorMode))
 
         # adjust camerax and cameray if beyond the "camera slack"
         playerCenterx = playerObj['x'] + int(playerObj['width'] / 2)
@@ -426,7 +426,7 @@ def getRandomOffCameraPos(camerax, cameray, objWidth, objHeight):
             return x, y
 
 
-def makeNewSquid(camerax, cameray, imgAspectRatio, apexPredatorMode=False):
+def makeNewEnemy(camerax, cameray, imgAspectRatio, apexPredatorMode=False):
     sq = {}
     if apexPredatorMode:
         generalSize = random.randint(15, 40)
