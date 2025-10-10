@@ -245,43 +245,43 @@ def runGame():
         drawHealthMeter(playerObj['health'])
 
         for event in pygame.event.get(): # event handling loop
-            if event.type == QUIT:
+            if event.type == pygame.QUIT:
                 terminate()
 
-            elif event.type == KEYDOWN:
-                if event.key in (K_UP, K_w):
+            elif event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_UP, pygame.K_w):
                     moveDown = False
                     moveUp = True
-                elif event.key in (K_DOWN, K_s):
+                elif event.key in (pygame.K_DOWN, pygame.K_s):
                     moveUp = False
                     moveDown = True
-                elif event.key in (K_LEFT, K_a):
+                elif event.key in (pygame.K_LEFT, pygame.K_a):
                     moveRight = False
                     moveLeft = True
                     if playerObj['facing'] != LEFT: # change player image
                         playerObj['surface'] = pygame.transform.scale(L_PLAYER_IMG, (playerObj['width'], playerObj['height']))
                     playerObj['facing'] = LEFT
-                elif event.key in (K_RIGHT, K_d):
+                elif event.key in (pygame.K_RIGHT, pygame.K_d):
                     moveLeft = False
                     moveRight = True
                     if playerObj['facing'] != RIGHT: # change player image
                         playerObj['surface'] = pygame.transform.scale(R_PLAYER_IMG, (playerObj['width'], playerObj['height']))
                     playerObj['facing'] = RIGHT
-                elif winMode and event.key == K_r:
+                elif winMode and event.key == pygame.K_r:
                     return
 
-            elif event.type == KEYUP:
+            elif event.type == pygame.KEYUP:
                 # stop moving the player
-                if event.key in (K_LEFT, K_a):
+                if event.key in (pygame.K_LEFT, pygame.K_a):
                     moveLeft = False
-                elif event.key in (K_RIGHT, K_d):
+                elif event.key in (pygame.K_RIGHT, pygame.K_d):
                     moveRight = False
-                elif event.key in (K_UP, K_w):
+                elif event.key in (pygame.K_UP, pygame.K_w):
                     moveUp = False
-                elif event.key in (K_DOWN, K_s):
+                elif event.key in (pygame.K_DOWN, pygame.K_s):
                     moveDown = False
 
-                elif event.key == K_ESCAPE:
+                elif event.key == pygame.K_ESCAPE:
                     terminate()
 
         if not gameOverMode:
