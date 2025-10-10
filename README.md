@@ -1,4 +1,4 @@
-# 🐍 Python Games 
+# <img width="30" height="30" alt="Python-logo-notext svg" src="/assets/images/Python-logo-notext.svg.png" /> Python Games 
 A simple set of arcade style games written in Python to help developers learn python.
 
 A fun and educational collection of simple arcade-style games written in Python. These games are great for beginners who want to learn Python through hands-on examples and game development.
