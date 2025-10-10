@@ -98,11 +98,14 @@ def get_image_aspect_ratio(image):
 
 def runGame():
     # set up variables for the start of a new game
-    invulnerableMode = False  # if the player is invulnerable
-    invulnerableStartTime = 0 # time the player became invulnerable
-    gameOverMode = False      # if the player has lost
-    gameOverStartTime = 0     # time the player lost
-    winMode = False           # if the player has won
+    invulnerableMode = False        # if the player is invulnerable
+    invulnerableStartTime = 0       # time the player became invulnerable
+    gameOverMode = False            # if the player has lost
+    gameOverStartTime = 0           # time the player lost
+    winMode = False                 # if the player has won
+    winMusicPlayed = False          # if the winner music has played
+    apexPredatorMusicPlayed = False # if the apex predator music has played
+    gameOverMusicPlayed = False     # if the game over music has played
 
     # Apex Predator mode
     apexPredatorMode = False
@@ -135,6 +138,10 @@ def runGame():
     # Calculate dynamically image aspect ratio
     enemyImgAspectRatio = get_image_aspect_ratio(R_ENEMY_IMG)
     playerImgAspectRatio = get_image_aspect_ratio(R_PLAYER_IMG)
+
+    # load audio
+    badSound = pygame.mixer.Sound('assets/sounds/badswap.wav')
+    goodSound = pygame.mixer.Sound('assets/sounds/chomp.ogg')
 
     # stores the player object:
     playerObj = {'aspect_ratio': playerImgAspectRatio,
@@ -268,6 +275,7 @@ def runGame():
                         playerObj['surface'] = pygame.transform.scale(R_PLAYER_IMG, (playerObj['width'], playerObj['height']))
                     playerObj['facing'] = RIGHT
                 elif winMode and event.key == pygame.K_r:
+                    pygame.mixer.music.stop()
                     return
 
             elif event.type == pygame.KEYUP:
@@ -309,6 +317,8 @@ def runGame():
 
                     if sqObj['width'] * sqObj['height'] <= playerObj['width'] * playerObj['height'] * playerObj['buffer']:
                         # player is larger and eats the enemy
+                        if not winMusicPlayed: # Don't play if you are playing winner music, that is annoying
+                            goodSound.play()
                         playerObj['width'] += int( (sqObj['width'] * sqObj['height'])**0.2 ) + 1
                         playerObj['height'] = int(playerObj['width'] * playerObj['aspect_ratio'])
 
@@ -331,6 +341,7 @@ def runGame():
 
                     elif not invulnerableMode:
                         # player is smaller and takes damage
+                        badSound.play()
                         invulnerableMode = True
                         invulnerableStartTime = time.time()
                         playerObj['health'] -= 1
@@ -338,19 +349,29 @@ def runGame():
                             gameOverMode = True # turn on "game over mode"
                             gameOverStartTime = time.time()
         else:
+            if not gameOverMusicPlayed:
+                playThemeMusic('game_over')
+                gameOverMusicPlayed = True
             # game is over, show "game over" text
             for i in range(len(gameOverSurfs)):
                 DISPLAYSURF.blit(gameOverSurfs[i], gameOverRects[i])
             if time.time() - gameOverStartTime > MSG_DISPLAY_TIME:
+                pygame.mixer.music.stop()
                 return # end the current game
 
         # check if the player has won.
         if winMode:
             DISPLAYSURF.blit(winSurf, winRect)
             DISPLAYSURF.blit(winSurf2, winRect2)
+            if not winMusicPlayed:
+                playThemeMusic('winner')
+                winMusicPlayed = True
 
         # Show Apex Predator message with fade-out
         if apexPredatorMode and apexPredatorStartTime:
+            if not apexPredatorMusicPlayed:
+                playThemeMusic('apex_predator')
+                apexPredatorMusicPlayed = True
             elapsed = time.time() - apexPredatorStartTime
             if elapsed <= MSG_DISPLAY_TIME:
                 alpha = max(0, int(255 * (1 - elapsed / MSG_DISPLAY_TIME)))  # fade from 255 to 0
@@ -372,6 +393,7 @@ def drawHealthMeter(currentHealth):
 
 
 def terminate():
+    pygame.mixer.music.stop()
     pygame.quit()
     sys.exit()
 
@@ -463,6 +485,26 @@ def wrap_text(text, font, max_width):
             current_line = word + ' '
     lines.append(current_line.strip())
     return lines
+
+def playThemeMusic(game_event):
+    """Play music based on game event triggered."""
+    pygame.mixer.music.stop()
+
+    match game_event:
+        case 'game_over':
+            pygame.mixer.music.load('assets/sounds/hot-cross-buns-part1.ogg')
+        case 'apex_predator':
+            pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part2.ogg')
+        case 'winner':
+            pygame.mixer.music.load('assets/sounds/rampage-todd-stalter-part1.ogg')
+        case _:
+            # log unrecognized event
+            print(f"[Music] Unrecognized game event: {game_event}")
+
+    # play once from start of sound file
+    pygame.mixer.music.play(0, 0.0)
+
+    return
 
 def getWrappedGameOverMessage():
     """Randomly selects and wraps a game over message, returning rendered surfaces and their rects."""
