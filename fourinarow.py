@@ -46,20 +46,20 @@ def main():
 
     REDPILERECT = pygame.Rect(int(SPACESIZE / 2), WINDOWHEIGHT - int(3 * SPACESIZE / 2), SPACESIZE, SPACESIZE)
     BLACKPILERECT = pygame.Rect(WINDOWWIDTH - int(3 * SPACESIZE / 2), WINDOWHEIGHT - int(3 * SPACESIZE / 2), SPACESIZE, SPACESIZE)
-    REDTOKENIMG = pygame.image.load('4row_red.png')
+    REDTOKENIMG = pygame.image.load('assets/images/4row_red.png')
     REDTOKENIMG = pygame.transform.smoothscale(REDTOKENIMG, (SPACESIZE, SPACESIZE))
-    BLACKTOKENIMG = pygame.image.load('4row_black.png')
+    BLACKTOKENIMG = pygame.image.load('assets/images/4row_black.png')
     BLACKTOKENIMG = pygame.transform.smoothscale(BLACKTOKENIMG, (SPACESIZE, SPACESIZE))
-    BOARDIMG = pygame.image.load('4row_board.png')
+    BOARDIMG = pygame.image.load('assets/images/4row_board.png')
     BOARDIMG = pygame.transform.smoothscale(BOARDIMG, (SPACESIZE, SPACESIZE))
 
-    HUMANWINNERIMG = pygame.image.load('4row_humanwinner.png')
-    COMPUTERWINNERIMG = pygame.image.load('4row_computerwinner.png')
-    TIEWINNERIMG = pygame.image.load('4row_tie.png')
+    HUMANWINNERIMG = pygame.image.load('assets/images/4row_humanwinner.png')
+    COMPUTERWINNERIMG = pygame.image.load('assets/images/4row_computerwinner.png')
+    TIEWINNERIMG = pygame.image.load('assets/images/4row_tie.png')
     WINNERRECT = HUMANWINNERIMG.get_rect()
     WINNERRECT.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2))
 
-    ARROWIMG = pygame.image.load('4row_arrow.png')
+    ARROWIMG = pygame.image.load('assets/images/4row_arrow.png')
     ARROWRECT = ARROWIMG.get_rect()
     ARROWRECT.left = REDPILERECT.right + 10
     ARROWRECT.centery = REDPILERECT.centery

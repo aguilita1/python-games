@@ -79,17 +79,17 @@ def main():
     # Load the images
     GEMIMAGES = []
     for i in range(1, NUMGEMIMAGES+1):
-        gemImage = pygame.image.load('gem%s.png' % i)
+        gemImage = pygame.image.load('assets/images/gem%s.png' % i)
         if gemImage.get_size() != (GEMIMAGESIZE, GEMIMAGESIZE):
             gemImage = pygame.transform.smoothscale(gemImage, (GEMIMAGESIZE, GEMIMAGESIZE))
         GEMIMAGES.append(gemImage)
 
     # Load the sounds.
     GAMESOUNDS = {}
-    GAMESOUNDS['bad swap'] = pygame.mixer.Sound('badswap.wav')
+    GAMESOUNDS['bad swap'] = pygame.mixer.Sound('assets/sounds/badswap.wav')
     GAMESOUNDS['match'] = []
     for i in range(NUMMATCHSOUNDS):
-        GAMESOUNDS['match'].append(pygame.mixer.Sound('match%s.wav' % i))
+        GAMESOUNDS['match'].append(pygame.mixer.Sound('assets/sounds/match%s.wav' % i))
 
     # Create pygame.Rect objects for each board space to
     # do board-coordinate-to-pixel-coordinate conversions.

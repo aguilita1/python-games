@@ -67,9 +67,9 @@ def main():
     showTextScreen('Tetromino for Idiots')
     while True: # game loop
         if random.randint(0, 1) == 0:
-            pygame.mixer.music.load('tetrisb.mid')
+            pygame.mixer.music.load('assets/sounds/tetrisb.mid')
         else:
-            pygame.mixer.music.load('tetrisc.mid')
+            pygame.mixer.music.load('assets/sounds/tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
         runGame()
         pygame.mixer.music.stop()

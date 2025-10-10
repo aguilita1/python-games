@@ -67,11 +67,11 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
     # Load images
-    LOGOIMAGE = pygame.image.load('inkspilllogo.png')
-    SPOTIMAGE = pygame.image.load('inkspillspot.png')
-    SETTINGSIMAGE = pygame.image.load('inkspillsettings.png')
-    SETTINGSBUTTONIMAGE = pygame.image.load('inkspillsettingsbutton.png')
-    RESETBUTTONIMAGE = pygame.image.load('inkspillresetbutton.png')
+    LOGOIMAGE = pygame.image.load('assets/images/inkspilllogo.png')
+    SPOTIMAGE = pygame.image.load('assets/images/inkspillspot.png')
+    SETTINGSIMAGE = pygame.image.load('assets/images/inkspillsettings.png')
+    SETTINGSBUTTONIMAGE = pygame.image.load('assets/images/inkspillsettingsbutton.png')
+    RESETBUTTONIMAGE = pygame.image.load('assets/images/inkspillresetbutton.png')
 
     pygame.display.set_caption('Ink Spill')
     mousex = 0

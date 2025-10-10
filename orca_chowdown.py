@@ -71,21 +71,21 @@ def main():
 
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
-    pygame.display.set_icon(pygame.image.load('gameicon.png'))
+    pygame.display.set_icon(pygame.image.load('assets/images/gameicon.png'))
     DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
     pygame.display.set_caption('Orca Chowndown')
     BASICFONT = pygame.font.Font('freesansbold.ttf', 32)
 
     # load the image files
-    L_ENEMY_IMG = pygame.image.load('squid-200x340.png')
+    L_ENEMY_IMG = pygame.image.load('assets/images/squid-200x340.png')
     R_ENEMY_IMG = pygame.transform.flip(L_ENEMY_IMG, True, False)
 
-    R_PLAYER_IMG = pygame.image.load('orca-425x250.png')
+    R_PLAYER_IMG = pygame.image.load('assets/images/orca-425x250.png')
     L_PLAYER_IMG = pygame.transform.flip(R_PLAYER_IMG, True, False)
 
     GRASSIMAGES = []
     for i in range(1, 5):
-        GRASSIMAGES.append(pygame.image.load('grass%s.png' % i))
+        GRASSIMAGES.append(pygame.image.load('assets/images/grass%s.png' % i))
 
     while True:
         runGame()
