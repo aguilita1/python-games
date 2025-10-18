@@ -29,7 +29,7 @@ DARKPURPLE = ( 128,  0,   128) #purple
 ORANGE = (255, 165, 0)
 BROWN = (139, 69, 19)
 BGCOLOR = BLACK
-
+MAX_APPLES = 13
 UP = 'up'
 DOWN = 'down'
 LEFT = 'left'
@@ -62,8 +62,10 @@ def runGame():
     direction = RIGHT
 
     # Start the apple in a random place.
-    apple = getRandomLocation()
-    apple2 = getRandomLocation()
+    appleList = []
+    for i in range(MAX_APPLES):
+        appleList.append(getRandomLocation())
+    print(appleList)
 
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop
@@ -88,15 +90,16 @@ def runGame():
             if wormBody['x'] == wormCoords[HEAD]['x'] and wormBody['y'] == wormCoords[HEAD]['y']:
                 return # game over
 
-        # check if worm has eaten an apply
-        if wormCoords[HEAD]['x'] == apple['x'] and wormCoords[HEAD]['y'] == apple['y']:
-            # don't remove worm's tail segment
-            apple = getRandomLocation() # set a new apple somewhere
-        elif wormCoords[HEAD]['x'] == apple2['x'] and wormCoords[HEAD]['y'] == apple2['y']:
-            # don't remove worm's tail segment
-            apple2 = getRandomLocation() # set a new apple somewhere
-        else:
-            del wormCoords[-1] # remove worm's tail segment
+        print(appleList)
+        # Check if the worm has eaten any apple
+        ateApple = False
+        for i in range(len(appleList)):
+            if wormCoords[HEAD]['x'] == appleList[i]['x'] and wormCoords[HEAD]['y'] == appleList[i]['y']:
+                ateApple = True
+                appleList[i] = getRandomLocation()  # Replace eaten apple with new one
+
+        if not ateApple:
+            del wormCoords[-1]  # Remove tail segment if no apple was eaten
 
         # move the worm by adding a segment in the direction it is moving
         if direction == UP:
@@ -111,8 +114,9 @@ def runGame():
         DISPLAYSURF.fill(BGCOLOR)
         drawGrid()
         drawWorm(wormCoords)
-        drawApple(apple)
-        drawApple(apple2)
+        for apple in appleList:
+            drawApple(apple)
+        # drawApple(apple2)
         drawScore(len(wormCoords) - 3)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
