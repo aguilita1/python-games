@@ -65,7 +65,6 @@ def runGame():
     appleList = []
     for i in range(MAX_APPLES):
         appleList.append(getRandomLocation())
-    print(appleList)
 
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop
@@ -90,7 +89,6 @@ def runGame():
             if wormBody['x'] == wormCoords[HEAD]['x'] and wormBody['y'] == wormCoords[HEAD]['y']:
                 return # game over
 
-        print(appleList)
         # Check if the worm has eaten any apple
         ateApple = False
         for i in range(len(appleList)):
@@ -116,7 +114,6 @@ def runGame():
         drawWorm(wormCoords)
         for apple in appleList:
             drawApple(apple)
-        # drawApple(apple2)
         drawScore(len(wormCoords) - 3)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
