@@ -9,10 +9,8 @@ import random, sys, time, math, pygame
 from pygame.locals import *
 
 FPS = 30 # frames per second to update the screen
-WINWIDTH = 1776 # 640 # width of the program's window, in pixels
+WINWIDTH = 640 # 640 # width of the program's window, in pixels
 WINHEIGHT = 952 # 440 # height in pixels
-# HALF_WINWIDTH = int(WINWIDTH / 2)
-HALF_WINHEIGHT = int(WINHEIGHT / 2)
 
 GRASSCOLOR = (0, 0, 255)
 WHITE = (255, 255, 255)
@@ -67,13 +65,12 @@ Grass data structure keys:
 """
 
 def main():
-    global FPSCLOCK, DISPLAYSURF, BASICFONT, L_ENEMY_IMG, R_ENEMY_IMG, GRASSIMAGES, L_PLAYER_IMG, R_PLAYER_IMG
+    global FPSCLOCK, DISPLAYSURF, BASICFONT, L_ENEMY_IMG, R_ENEMY_IMG, GRASSIMAGES, L_PLAYER_IMG, R_PLAYER_IMG, WINWIDTH, WINHEIGHT
 
     pygame.init()
     infoObj = pygame.display.Info()
     WINWIDTH = infoObj.current_w
     WINHEIGHT = infoObj.current_h
-    HALF_WINHEIGHT = int(WINHEIGHT / 2)
 
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_icon(pygame.image.load('assets/images/gameicon.png'))
@@ -224,10 +221,10 @@ def runGame():
             camerax = playerCenterx + CAMERASLACK - get_half_Win_Width()
         elif playerCenterx - (camerax + get_half_Win_Width()) > CAMERASLACK:
             camerax = playerCenterx - CAMERASLACK - get_half_Win_Width()
-        if (cameray + HALF_WINHEIGHT) - playerCentery > CAMERASLACK:
-            cameray = playerCentery + CAMERASLACK - HALF_WINHEIGHT
-        elif playerCentery - (cameray + HALF_WINHEIGHT) > CAMERASLACK:
-            cameray = playerCentery - CAMERASLACK - HALF_WINHEIGHT
+        if (cameray + get_half_Win_Height()) - playerCentery > CAMERASLACK:
+            cameray = playerCentery + CAMERASLACK - get_half_Win_Height()
+        elif playerCentery - (cameray + get_half_Win_Height()) > CAMERASLACK:
+            cameray = playerCentery - CAMERASLACK - get_half_Win_Height()
 
         # draw the green background
         DISPLAYSURF.fill(GRASSCOLOR)
@@ -543,9 +540,9 @@ def getWrappedGameOverMessage():
     surfaces = [BASICFONT.render(line, True, WHITE) for line in wrappedLines]
     rects = [surf.get_rect() for surf in surfaces]
 
-    # Center all lines vertically around HALF_WINHEIGHT
+    # Center all lines vertically around half of window height
     total_height = sum(rect.height for rect in rects) + (len(rects) - 1) * 5  # add spacing
-    start_y = HALF_WINHEIGHT - total_height // 2
+    start_y = get_half_Win_Height() - total_height // 2
 
     for rect in rects:
         rect.centerx = get_half_Win_Width()
