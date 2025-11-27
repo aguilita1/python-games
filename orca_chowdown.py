@@ -9,9 +9,9 @@ import random, sys, time, math, pygame
 from pygame.locals import *
 
 FPS = 30 # frames per second to update the screen
-WINWIDTH = 640 # width of the program's window, in pixels
-WINHEIGHT = 480 # height in pixels
-HALF_WINWIDTH = int(WINWIDTH / 2)
+WINWIDTH = 1776 # 640 # width of the program's window, in pixels
+WINHEIGHT = 952 # 440 # height in pixels
+# HALF_WINWIDTH = int(WINWIDTH / 2)
 HALF_WINHEIGHT = int(WINHEIGHT / 2)
 
 GRASSCOLOR = (0, 0, 255)
@@ -22,7 +22,7 @@ CAMERASLACK = 90     # how far from the center the enemy moves before moving the
 MOVERATE = 9         # how fast the player moves
 BOUNCERATE = 6       # how fast the player bounces (large is slower)
 BOUNCEHEIGHT = 30    # how high the player bounces
-STARTSIZE = 25       # how big the player starts off
+STARTSIZE = 38       # how big the player starts off
 WINSIZE = 300        # how big the player needs to be to win
 INVULNTIME = 2       # how long the player is invulnerable after being hit in seconds
 MSG_DISPLAY_TIME = 6 # how long the message like "game over" text stays on the screen in seconds
@@ -70,6 +70,11 @@ def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT, L_ENEMY_IMG, R_ENEMY_IMG, GRASSIMAGES, L_PLAYER_IMG, R_PLAYER_IMG
 
     pygame.init()
+    infoObj = pygame.display.Info()
+    WINWIDTH = infoObj.current_w
+    WINHEIGHT = infoObj.current_h
+    HALF_WINHEIGHT = int(WINHEIGHT / 2)
+
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_icon(pygame.image.load('assets/images/gameicon.png'))
     DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
@@ -96,6 +101,13 @@ def get_image_aspect_ratio(image):
     height = image.get_height()
     return height / width
 
+def get_half_Win_Width():
+    return int(WINWIDTH / 2)
+
+def get_half_Win_Height():
+    return int(WINHEIGHT / 2)
+
+
 def runGame():
     # set up variables for the start of a new game
     invulnerableMode = False        # if the player is invulnerable
@@ -118,15 +130,15 @@ def runGame():
     apexPredatorSurf = BASICFONT.render('You are an Apex Predator!', True, WHITE)
     apexPredatorSurf = apexPredatorSurf.convert_alpha()  # enables alpha transparency
     apexPredatorRect = apexPredatorSurf.get_rect()
-    apexPredatorRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT - 50)
+    apexPredatorRect.center = (get_half_Win_Width(), get_half_Win_Height() - 50)
 
     winSurf = BASICFONT.render('You have achieved Final Fin!', True, WHITE)
     winRect = winSurf.get_rect()
-    winRect.center = (HALF_WINWIDTH, HALF_WINHEIGHT)
+    winRect.center = (get_half_Win_Width(), get_half_Win_Height())
 
     winSurf2 = BASICFONT.render('(Press "r" to restart.)', True, WHITE)
     winRect2 = winSurf2.get_rect()
-    winRect2.center = (HALF_WINWIDTH, HALF_WINHEIGHT + 30)
+    winRect2.center = (get_half_Win_Width(), get_half_Win_Height() + 30)
 
     # camerax and cameray are the top left of where the camera view is
     camerax = 0
@@ -151,8 +163,8 @@ def runGame():
                  'facing': LEFT,
                  'buffer': 2.50, # buffer to help player big meals
                  'width_apex_predator': 150, # reduce cheat mode because most meals edible
-                 'x': HALF_WINWIDTH,
-                 'y': HALF_WINHEIGHT,
+                 'x': get_half_Win_Width(),
+                 'y': get_half_Win_Height(),
                  'bounce':0,
                  'health': MAXHEALTH}
 
@@ -208,10 +220,10 @@ def runGame():
         # adjust camerax and cameray if beyond the "camera slack"
         playerCenterx = playerObj['x'] + int(playerObj['width'] / 2)
         playerCentery = playerObj['y'] + int(playerObj['height'] / 2)
-        if (camerax + HALF_WINWIDTH) - playerCenterx > CAMERASLACK:
-            camerax = playerCenterx + CAMERASLACK - HALF_WINWIDTH
-        elif playerCenterx - (camerax + HALF_WINWIDTH) > CAMERASLACK:
-            camerax = playerCenterx - CAMERASLACK - HALF_WINWIDTH
+        if (camerax + get_half_Win_Width()) - playerCenterx > CAMERASLACK:
+            camerax = playerCenterx + CAMERASLACK - get_half_Win_Width()
+        elif playerCenterx - (camerax + get_half_Win_Width()) > CAMERASLACK:
+            camerax = playerCenterx - CAMERASLACK - get_half_Win_Width()
         if (cameray + HALF_WINHEIGHT) - playerCentery > CAMERASLACK:
             cameray = playerCentery + CAMERASLACK - HALF_WINHEIGHT
         elif playerCentery - (cameray + HALF_WINHEIGHT) > CAMERASLACK:
@@ -536,7 +548,7 @@ def getWrappedGameOverMessage():
     start_y = HALF_WINHEIGHT - total_height // 2
 
     for rect in rects:
-        rect.centerx = HALF_WINWIDTH
+        rect.centerx = get_half_Win_Width()
 
     # Apply vertical positioning
     for i, rect in enumerate(rects):
