@@ -19,11 +19,11 @@ def main():
         run_menu()
         
     except ImportError as e:
-        print(f"Error importing main menu: {e}")
+        print("Error importing main menu: {}".format(e))
         print("Make sure pygame is installed: pip install pygame")
         sys.exit(1)
     except Exception as e:
-        print(f"Error launching menu: {e}")
+        print("Error launching menu: {}".format(e))
         sys.exit(1)
 
 if __name__ == "__main__":

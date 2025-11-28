@@ -151,10 +151,10 @@ class MainMenu:
     def launch_selected_game(self):
         """Launch the currently selected game"""
         if self.selected_game:
-            print(f"Launching game: {self.selected_game}")
+            print("Launching game: {}".format(self.selected_game))
             success = self.game_manager.launch_game(self.selected_game)
             if not success:
-                print(f"Failed to launch game: {self.selected_game}")
+                print("Failed to launch game: {}".format(self.selected_game))
         else:
             print("No game selected")
     
@@ -183,7 +183,7 @@ class MainMenu:
         self.screen.blit(title_surface, title_rect)
         
         # Game count
-        count_text = f"{len(self.available_games)} games available"
+        count_text = "{} games available".format(len(self.available_games))
         count_surface = self.button_font.render(count_text, True, self.TEXT_COLOR)
         count_rect = count_surface.get_rect()
         count_rect.right = self.WINDOW_WIDTH - 20
