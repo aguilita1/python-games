@@ -156,7 +156,7 @@ class GamePreviewPanel:
         y_offset += 50
         
         # Draw preview area
-        preview_rect = pygame.Rect(self.rect.x + 20, y_offset, 200, 120)
+        preview_rect = pygame.Rect(self.rect.x + 20, y_offset, 500, 300)
         pygame.draw.rect(surface, (30, 30, 30), preview_rect)
         pygame.draw.rect(surface, (100, 100, 100), preview_rect, 1)
         
@@ -175,31 +175,23 @@ class GamePreviewPanel:
         # Draw game info to the right of preview
         info_x = preview_rect.right + 20
         
+        y_offset += 310
+
         # Description
         desc_lines = self._wrap_text(self.current_game_info['description'], 
-                                   self.rect.width - (info_x - self.rect.x) - 20, self.small_font)
+                                   self.rect.width  - 20, self.small_font)
         for i, line in enumerate(desc_lines[:4]):  # Limit to 4 lines
             line_surface = self.small_font.render(line, True, self.text_color)
-            surface.blit(line_surface, (info_x, y_offset + i * 25))
-        
-        y_offset += 130
-        
+            surface.blit(line_surface, (self.rect.x + 20, y_offset + i * 25))
+
+        y_offset += 30
+
+
         # Controls
         controls_text = f"Controls: {self.current_game_info.get('controls', 'N/A')}"
         controls_surface = self.small_font.render(controls_text, True, self.text_color)
         surface.blit(controls_surface, (self.rect.x + 20, y_offset))
         y_offset += 30
-        
-        # Difficulty
-        difficulty_text = f"Difficulty: {self.current_game_info.get('difficulty', 'Unknown')}"
-        difficulty_surface = self.small_font.render(difficulty_text, True, self.text_color)
-        surface.blit(difficulty_surface, (self.rect.x + 20, y_offset))
-        y_offset += 30
-        
-        # Category
-        category_text = f"Category: {self.current_game_info.get('category', 'Other')}"
-        category_surface = self.small_font.render(category_text, True, self.text_color)
-        surface.blit(category_surface, (self.rect.x + 20, y_offset))
     
     def _wrap_text(self, text: str, max_width: int, font: pygame.font.Font):
         """Wrap text to fit within max_width"""
