@@ -1,0 +1,154 @@
+{
+  "blankpygame": {
+    "name": "Blank PyGame",
+    "description": "A blank pygame template - perfect starting point for your own game ideas!",
+    "difficulty": "Beginner",
+    "controls": "N/A",
+    "high_score_enabled": false,
+    "category": "Template"
+  },
+  "catanimation": {
+    "name": "Cat Animation",
+    "description": "Watch a cute cat walk around the screen in this simple animation demo.",
+    "difficulty": "Easy",
+    "controls": "No controls needed",
+    "high_score_enabled": false,
+    "category": "Animation"
+  },
+  "drawing": {
+    "name": "Drawing Program",
+    "description": "A simple drawing application where you can create digital art with your mouse.",
+    "difficulty": "Easy",
+    "controls": "Mouse to draw",
+    "high_score_enabled": false,
+    "category": "Creative"
+  },
+  "flippy": {
+    "name": "Flippy (Reversi)",
+    "description": "Classic Reversi/Othello game - flip your opponent's pieces to win!",
+    "difficulty": "Medium",
+    "controls": "Mouse to place pieces",
+    "high_score_enabled": true,
+    "category": "Strategy"
+  },
+  "fourinarow": {
+    "name": "Four in a Row",
+    "description": "Connect four pieces in a row to win in this classic strategy game!",
+    "difficulty": "Medium",
+    "controls": "Mouse to drop pieces",
+    "high_score_enabled": true,
+    "category": "Strategy"
+  },
+  "gemgem": {
+    "name": "Gem Gem",
+    "description": "Match colorful gems in this addictive tile-matching puzzle game!",
+    "difficulty": "Medium",
+    "controls": "Mouse to swap gems",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "inkspill": {
+    "name": "Ink Spill",
+    "description": "Flood the screen with your color in the fewest moves possible!",
+    "difficulty": "Medium",
+    "controls": "Mouse to select colors",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "memorypuzzle": {
+    "name": "Memory Puzzle",
+    "description": "Test your memory by matching pairs of hidden symbols!",
+    "difficulty": "Easy",
+    "controls": "Mouse to flip tiles",
+    "high_score_enabled": true,
+    "category": "Memory"
+  },
+  "orca_chowdown": {
+    "name": "Orca Chowdown",
+    "description": "Play as an orca and hunt for fish in the deep ocean waters!",
+    "difficulty": "Medium",
+    "controls": "Arrow keys to swim",
+    "high_score_enabled": true,
+    "category": "Action"
+  },
+  "pentomino": {
+    "name": "Pentomino",
+    "description": "Tetris-like puzzle with 5-block pieces - more challenging than regular Tetris!",
+    "difficulty": "Hard",
+    "controls": "Arrow keys, Space to drop",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "simulate": {
+    "name": "Simon Says",
+    "description": "Repeat the pattern of colors and sounds in this memory challenge game!",
+    "difficulty": "Medium",
+    "controls": "Mouse to click buttons",
+    "high_score_enabled": true,
+    "category": "Memory"
+  },
+  "slidepuzzle": {
+    "name": "Slide Puzzle",
+    "description": "Slide numbered tiles to arrange them in the correct order!",
+    "difficulty": "Medium",
+    "controls": "Mouse to slide tiles",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "squirrel": {
+    "name": "Squirrel Eat Squirrel",
+    "description": "Control a squirrel and eat smaller squirrels while avoiding larger ones!",
+    "difficulty": "Medium",
+    "controls": "Arrow keys to move",
+    "high_score_enabled": true,
+    "category": "Action"
+  },
+  "squirrel_pounce": {
+    "name": "Squirrel Pounce",
+    "description": "Help the squirrel pounce on enemies in this fast-paced action game!",
+    "difficulty": "Medium",
+    "controls": "Arrow keys, Space to pounce",
+    "high_score_enabled": true,
+    "category": "Action"
+  },
+  "starpusher": {
+    "name": "Star Pusher (Sokoban)",
+    "description": "Push stars onto their targets in this classic puzzle game!",
+    "difficulty": "Hard",
+    "controls": "Arrow keys to move",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "super-tux-vs-yeti": {
+    "name": "Super Tux vs Yeti",
+    "description": "Help Tux the penguin battle against the mighty yeti!",
+    "difficulty": "Medium",
+    "controls": "Arrow keys, Space to attack",
+    "high_score_enabled": true,
+    "category": "Action"
+  },
+  "tetromino": {
+    "name": "Tetromino (Tetris)",
+    "description": "Classic Tetris game - arrange falling blocks to clear lines!",
+    "difficulty": "Medium",
+    "controls": "Arrow keys, Space to drop",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "tetrominoforidiots": {
+    "name": "Tetris for Idiots",
+    "description": "A simplified version of Tetris that's easier to play and learn!",
+    "difficulty": "Easy",
+    "controls": "Arrow keys, Space to drop",
+    "high_score_enabled": true,
+    "category": "Puzzle"
+  },
+  "wormy": {
+    "name": "Wormy (Snake)",
+    "description": "Classic snake game - eat apples and grow longer without hitting yourself!",
+    "difficulty": "Easy",
+    "controls": "Arrow keys or WASD",
+    "high_score_enabled": true,
+    "category": "Action"
+  }
+}
