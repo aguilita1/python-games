@@ -65,7 +65,7 @@
   },
   "orca_chowdown": {
     "name": "Orca Chowdown",
-    "description": "Play as an orca and hunt for fish in the deep ocean waters!",
+    "description": "Play as an orca and hunt for squid in the deep ocean waters!",
     "difficulty": "Medium",
     "controls": "Arrow keys to swim",
     "high_score_enabled": true,
