@@ -127,7 +127,7 @@ class GamePreviewPanel:
         """Load preview image for the game"""
         try:
             import os
-            preview_path = f"assets/previews/{game_key}_preview.png"
+            preview_path = "assets/previews/{}_preview.png".format(game_key)
             if os.path.exists(preview_path):
                 self.preview_image = pygame.image.load(preview_path)
             else:
@@ -188,7 +188,7 @@ class GamePreviewPanel:
 
 
         # Controls
-        controls_text = f"Controls: {self.current_game_info.get('controls', 'N/A')}"
+        controls_text = "Controls: {}".format(self.current_game_info.get('controls', 'N/A'))
         controls_surface = self.small_font.render(controls_text, True, self.text_color)
         surface.blit(controls_surface, (self.rect.x + 20, y_offset))
         y_offset += 30

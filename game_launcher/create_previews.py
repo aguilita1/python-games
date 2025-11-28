@@ -91,20 +91,20 @@ def main():
     print("Generating preview images...")
     
     for game_key, game_info in games_metadata.items():
-        print(f"Creating preview for {game_info['name']}...")
+        print("Creating preview for {}...".format(game_info['name']))
         
         # Create preview image
         preview_surface = create_preview_image(game_key, game_info)
         
         # Save image
-        filename = f"{game_key}_preview.png"
+        filename = "{}_preview.png".format(game_key)
         filepath = os.path.join(preview_dir, filename)
         pygame.image.save(preview_surface, filepath)
         
-        print(f"  Saved: {filepath}")
+        print("  Saved: {}".format(filepath))
     
     pygame.quit()
-    print(f"\nGenerated {len(games_metadata)} preview images in {preview_dir}")
+    print("\nGenerated %d preview images in %s" % len(games_metadata), preview_dir)
 
 if __name__ == "__main__":
     main()

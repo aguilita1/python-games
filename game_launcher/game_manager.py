@@ -24,28 +24,28 @@ class GameManager:
                 if os.path.exists(path):
                     with open(path, 'r') as f:
                         self.games_metadata = json.load(f)
-                    print(f"Loaded metadata from: {path}")
+                    print("Loaded metadata from: {}".format(path))
                     return
             
             print("Warning: game_metadata.json not found in any expected location")
             self.games_metadata = {}
         except Exception as e:
-            print(f"Error loading metadata: {e}")
+            print("Error loading metadata: {}".format(e))
             self.games_metadata = {}
     
     def get_available_games(self) -> List[str]:
         """Get list of available game files"""
         available_games = []
-        print(f"Looking for games in directory: {os.path.abspath(self.games_directory)}")
+        print("Looking for games in directory: {}".format(os.path.abspath(self.games_directory)))
         
         for game_key in self.games_metadata.keys():
-            game_file = f"{game_key}.py"
+            game_file = "{}.py".format(game_key)
             game_path = os.path.join(self.games_directory, game_file)
-            print(f"Checking for: {game_path} - Exists: {os.path.exists(game_path)}")
+            print("Checking for: %s - Exists: %s" % game_path, os.path.exists(game_path))
             if os.path.exists(game_path):
                 available_games.append(game_key)
         
-        print(f"Found {len(available_games)} available games: {available_games}")
+        print("Found %d available games: %s" % len(available_games), available_games)
         return available_games
     
     def get_game_info(self, game_key: str) -> Optional[Dict]:
@@ -54,20 +54,20 @@ class GameManager:
     
     def launch_game(self, game_key: str) -> bool:
         """Launch a game by its key"""
-        game_file = f"{game_key}.py"
+        game_file = "{}.py".format(game_key)
         game_path = os.path.join(self.games_directory, game_file)
         
         if not os.path.exists(game_path):
-            print(f"Error: Game file {game_file} not found at {game_path}")
+            print("Error: Game file %s not found at %s" % game_file, game_path)
             return False
         
         try:
             # Change to the games directory and run the game
-            print(f"Launching game: {game_path}")
+            print("Launching game: {}".format(game_path))
             subprocess.run([sys.executable, game_file], cwd=self.games_directory)
             return True
         except Exception as e:
-            print(f"Error launching game {game_key}: {e}")
+            print("Error launching game %s: %s" % game_key, e)
             return False
     
     def get_games_by_category(self) -> Dict[str, List[str]]:
