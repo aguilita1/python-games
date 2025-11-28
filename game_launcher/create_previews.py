@@ -104,7 +104,7 @@ def main():
         print("  Saved: {}".format(filepath))
     
     pygame.quit()
-    print("\nGenerated %d preview images in %s" % len(games_metadata), preview_dir)
+    print("\nGenerated %d preview images in %s" % (len(games_metadata), preview_dir))
 
 if __name__ == "__main__":
     main()

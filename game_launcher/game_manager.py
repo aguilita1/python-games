@@ -41,11 +41,11 @@ class GameManager:
         for game_key in self.games_metadata.keys():
             game_file = "{}.py".format(game_key)
             game_path = os.path.join(self.games_directory, game_file)
-            print("Checking for: %s - Exists: %s" % game_path, os.path.exists(game_path))
+            print("Checking for: %s - Exists: %s" % (game_path, os.path.exists(game_path)))
             if os.path.exists(game_path):
                 available_games.append(game_key)
         
-        print("Found %d available games: %s" % len(available_games), available_games)
+        print("Found %d available games: %s" % (len(available_games), available_games))
         return available_games
     
     def get_game_info(self, game_key: str) -> Optional[Dict]:
@@ -58,7 +58,7 @@ class GameManager:
         game_path = os.path.join(self.games_directory, game_file)
         
         if not os.path.exists(game_path):
-            print("Error: Game file %s not found at %s" % game_file, game_path)
+            print("Error: Game file %s not found at %s" % (game_file, game_path))
             return False
         
         try:
@@ -67,7 +67,7 @@ class GameManager:
             subprocess.run([sys.executable, game_file], cwd=self.games_directory)
             return True
         except Exception as e:
-            print("Error launching game %s: %s" % game_key, e)
+            print("Error launching game %s: %s" % (game_key, e))
             return False
     
     def get_games_by_category(self) -> Dict[str, List[str]]:
