@@ -1,37 +1,40 @@
 # How to Create Repository From Existing Code
 ## 1. Initialize Git in your project folder
-git init
+`git init`
 
 ## 2. Add all your code files to the staging area
-git add .
+`git add .`
 
 ## 3. Commit your files locally
-git commit -m "Initial commit"
+`git commit -m "Initial commit"`
 
 ## 4. Rename your default local branch to 'main'
-git branch -M main
+`git branch -M main`
 
 ## 5. Link your local project to your new GitHub repository
-git remote add origin https://github.com/aguilita2/sea-python.git
+`git remote add origin https://github.com/aguilita2/sea-python.git`
 
 ## 6. Push your local code up to GitHub
-git push -u origin main
+`git push -u origin main`
 
 
 
 # How to commit changes later
 ## 1. Find what changed
-git status
+`git status`
 
 ## 2. Decide which files you want to commit
-## replace <filename> with actual file name e.g. README.md
-## Pro-Tip use tab key to automatically complete filename
-git add <filename>
+* replace <filename> with actual file name e.g. README.md
+* Pro-Tip use tab key to automatically complete filename
+  
+`git add <filename>`
 
 ## 3. Add a commit message to describe the change me
-## replace message with some description of the commit
-git commit -m "Added documentation"
+* replace message with some description of the commit
+
+`git commit -m "Added documentation"`
 
 ## 4. Publish your changes to Github cloud.
-## Note you will likely need to log into you github account
-git push
+* Note you will likely need to log into you github account
+  
+`git push`
